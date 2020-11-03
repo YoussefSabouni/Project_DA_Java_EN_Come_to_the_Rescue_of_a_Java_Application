@@ -23,23 +23,18 @@ public class AnalyticsCounter {
 
             Set<String> symptoms = new HashSet<>(symptomsRecovered);
 
-            // get first symptom
-            //            String line = reader.readLine();
-
-            //            // Playback loop for each line of the file.
-            //            while (line != null) {
-            //                System.out.println("symptom from file: " + line);
-            //                if (line.equals("headache")) {
-            //                    headacheCount++;
-            //                    System.out.println("number of headaches: " + headacheCount);
-            //                } else if (line.equals("rash")) {
-            //                    rashCount++;
-            //                } else if (line.contains("pupils")) {
-            //                    pupilDilatedCount++;
-            //                }
-            //                // get another symptom
-            //                line = reader.readLine();
-            //            }
+            // Playback loop for each line of the file.
+            for (String symptom : symptomsRecovered) {
+                System.out.println("symptom from file: " + symptom);
+                if (symptom.equals("headache")) {
+                    headacheCount++;
+                    System.out.println("number of headaches: " + headacheCount);
+                } else if (symptom.equals("rash")) {
+                    rashCount++;
+                } else if (symptom.contains("pupils")) {
+                    pupilDilatedCount++;
+                }
+            }
 
             // Insert lines in the file result.out
             writer.write("headache: " + headacheCount + "\n");
