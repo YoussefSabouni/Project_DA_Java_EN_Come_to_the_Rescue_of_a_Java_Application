@@ -16,6 +16,7 @@ public class AnalyticsCounter {
         // Exception handling and resource auto-closure with try-with-resources.
         try (BufferedReader reader = new BufferedReader(new FileReader("symptoms.txt")) ; FileWriter writer = new FileWriter("result.out")) {
 
+            // get first symptom
             String line = reader.readLine();
 
             // Playback loop for each line of the file.
@@ -29,8 +30,8 @@ public class AnalyticsCounter {
                 } else if (line.contains("pupils")) {
                     pupilDilatedCount++;
                 }
-
-                line = reader.readLine();    // get another symptom
+                // get another symptom
+                line = reader.readLine();
             }
 
             // Insert lines in the file result.out
