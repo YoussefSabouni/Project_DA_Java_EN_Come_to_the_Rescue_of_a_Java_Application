@@ -1,6 +1,7 @@
 package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -12,29 +13,34 @@ public class AnalyticsCounter {
 
     public static void main(String[] args) throws Exception {
 
-        // first get input
-        BufferedReader reader = new BufferedReader(new FileReader("symptoms.txt"));
-        String         line   = reader.readLine();
+        // Exception handling and resource auto-closure with try-with-resources.
+        try (BufferedReader reader = new BufferedReader(new FileReader("symptoms.txt")) ; FileWriter writer = new FileWriter("result.out")) {
 
-        while (line != null) {
-            System.out.println("symptom from file: " + line);
-            if (line.equals("headache")) {
-                headacheCount++;
-                System.out.println("number of headaches: " + headacheCount);
-            } else if (line.equals("rash")) {
-                rashCount++;
-            } else if (line.contains("pupils")) {
-                pupilDilatedCount++;
+            // get first symptom
+            String line = reader.readLine();
+
+            // Playback loop for each line of the file.
+            while (line != null) {
+                System.out.println("symptom from file: " + line);
+                if (line.equals("headache")) {
+                    headacheCount++;
+                    System.out.println("number of headaches: " + headacheCount);
+                } else if (line.equals("rash")) {
+                    rashCount++;
+                } else if (line.contains("pupils")) {
+                    pupilDilatedCount++;
+                }
+                // get another symptom
+                line = reader.readLine();
             }
 
-            line = reader.readLine();    // get another symptom
+            // Insert lines in the file result.out
+            writer.write("headache: " + headacheCount + "\n");
+            writer.write("rash: " + rashCount + "\n");
+            writer.write("dilated pupils: " + pupilDilatedCount + "\n");
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
         }
 
-        // next generate output
-        FileWriter writer = new FileWriter("result.out");
-        writer.write("headache: " + headacheCount + "\n");
-        writer.write("rash: " + rashCount + "\n");
-        writer.write("dilated pupils: " + pupilDilatedCount + "\n");
-        writer.close();
     }
 }
