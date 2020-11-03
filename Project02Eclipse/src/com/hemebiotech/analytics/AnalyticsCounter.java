@@ -19,8 +19,10 @@ public class AnalyticsCounter {
 
             ReadSymptomDataFromFile symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
 
+            // Extracts the list of all symptoms from the file.
             List<String> symptomsRecovered = symptomsFile.GetSymptoms();
 
+            // Deduplication of the list of recovered symptoms.
             Set<String> symptoms = new HashSet<>(symptomsRecovered);
 
             // Playback loop for each line of the file.
