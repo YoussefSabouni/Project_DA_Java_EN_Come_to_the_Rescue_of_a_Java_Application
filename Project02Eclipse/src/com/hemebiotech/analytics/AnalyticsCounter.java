@@ -28,7 +28,7 @@ public class AnalyticsCounter {
 
             // Insert count by symptom in the file result.out
             for (Map.Entry<String, Integer> symptomCounted : symptomsCounted.entrySet()) {
-                writer.write(symptomCounted.getKey() + ": " + symptomCounted.getValue());
+                writer.write(symptomCounted.getKey() + ": " + symptomCounted.getValue() + "\n");
             }
 
         } catch (FileNotFoundException e) {
