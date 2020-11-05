@@ -2,9 +2,7 @@ package com.hemebiotech.analytics;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class AnalyticsCounter {
 
@@ -25,20 +23,14 @@ public class AnalyticsCounter {
             // Deduplication of the list of recovered symptoms.
             Set<String> symptoms = new HashSet<>(symptomsRecovered);
 
-            // Playback loop for each line of the file.
-            for (String symptom : symptomsRecovered) {
-                System.out.println("symptom from file: " + symptom);
-                if (symptom.equals("headache")) {
-                    headacheCount++;
-                    System.out.println("number of headaches: " + headacheCount);
-                } else if (symptom.equals("rash")) {
-                    rashCount++;
-                } else if (symptom.contains("pupils")) {
-                    pupilDilatedCount++;
-                }
-            }
+            Map<String, Integer> map = new HashMap<>();
 
-            // Insert lines in the file result.out
+            symptoms.forEach(item -> map.put(item, 0));
+
+            // Playback loop for each line of the file.
+            symptomsRecovered.forEach(item -> map.put(item, map.get(item) + 1));
+
+            // Insert count by symptom in the file result.out
             writer.write("headache: " + headacheCount + "\n");
             writer.write("rash: " + rashCount + "\n");
             writer.write("dilated pupils: " + pupilDilatedCount + "\n");
