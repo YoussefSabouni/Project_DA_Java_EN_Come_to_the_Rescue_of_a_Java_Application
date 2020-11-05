@@ -6,10 +6,6 @@ import java.util.*;
 
 public class AnalyticsCounter {
 
-    private static int headacheCount     = 0;    // initialize to 0
-    private static int rashCount         = 0;        // initialize to 0
-    private static int pupilDilatedCount = 0;        // initialize to 0
-
     public static void main(String[] args) throws Exception {
 
         // Exception handling and resource auto-closure with try-with-resources.
@@ -23,17 +19,18 @@ public class AnalyticsCounter {
             // Deduplication of the list of recovered symptoms.
             Set<String> symptoms = new HashSet<>(symptomsRecovered);
 
-            Map<String, Integer> map = new HashMap<>();
+            Map<String, Integer> symptomsCounted = new HashMap<>();
 
-            symptoms.forEach(item -> map.put(item, 0));
+            symptoms.forEach(item -> symptomsCounted.put(item, 0));
 
             // Playback loop for each line of the file.
-            symptomsRecovered.forEach(item -> map.put(item, map.get(item) + 1));
+            symptomsRecovered.forEach(item -> symptomsCounted.put(item, symptomsCounted.get(item) + 1));
 
             // Insert count by symptom in the file result.out
-            writer.write("headache: " + headacheCount + "\n");
-            writer.write("rash: " + rashCount + "\n");
-            writer.write("dilated pupils: " + pupilDilatedCount + "\n");
+            for (Map.Entry<String, Integer> symptomCounted : symptomsCounted.entrySet()) {
+                writer.write(symptomCounted.getKey() + ": " + symptomCounted.getValue());
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
