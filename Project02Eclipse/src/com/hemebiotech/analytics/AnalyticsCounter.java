@@ -1,39 +1,43 @@
 package com.hemebiotech.analytics;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.*;
 
 public class AnalyticsCounter {
+	private static int headacheCount = 0;	// initialize to 0
+	private static int rashCount = 0;		// initialize to 0
+	private static int pupilCount = 0;		// initialize to 0
+	
+	public static void main(String args[]) throws Exception {
+		// first get input
+		BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
+		String line = reader.readLine();
 
-    public static void main(String[] args) throws Exception {
+		int i = 0;	// set i to 0
+		int headCount = 0;	// counts headaches
+		while (line != null) {
+			i++;	// increment i
+			System.out.println("symptom from file: " + line);
+			if (line.equals("headache")) {
+				headCount++;
+				System.out.println("number of headaches: " + headCount);
+			}
+			else if (line.equals("rush")) {
+				rashCount++;
+			}
+			else if (line.contains("pupils")) {
+				pupilCount++;
+			}
 
-        // Exception handling and resource auto-closure with try-with-resources.
-        try (FileWriter writer = new FileWriter("result.out")) {
-
-            ReadSymptomDataFromFile symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
-
-            // Extracts the list of all symptoms from the file.
-            List<String> symptomsRecovered = symptomsFile.getSymptoms();
-
-            // Deduplication of the list of recovered symptoms.
-            Set<String> symptoms = new HashSet<>(symptomsRecovered);
-
-            Map<String, Integer> symptomsCounted = new HashMap<>();
-
-            symptoms.forEach(item -> symptomsCounted.put(item, 0));
-
-            // Playback loop for each line of the file.
-            symptomsRecovered.forEach(item -> symptomsCounted.put(item, symptomsCounted.get(item) + 1));
-
-            // Insert count by symptom in the file result.out
-            for (Map.Entry<String, Integer> symptomCounted : symptomsCounted.entrySet()) {
-                writer.write(symptomCounted.getKey() + ": " + symptomCounted.getValue() + "\n");
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
+			line = reader.readLine();	// get another symptom
+		}
+		
+		// next generate output
+		FileWriter writer = new FileWriter ("result.out");
+		writer.write("headache: " + headacheCount + "\n");
+		writer.write("rash: " + rashCount + "\n");
+		writer.write("dialated pupils: " + pupilCount + "\n");
+		writer.close();
+	}
 }
