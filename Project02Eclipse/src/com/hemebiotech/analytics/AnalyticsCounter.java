@@ -14,7 +14,7 @@ public class AnalyticsCounter {
         // Exception handling and resource auto-closure with try-with-resources.
         try (FileWriter writer = new FileWriter("result.out")) {
 
-            ReadSymptomDataFromFile symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
+            ISymptomReader symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
 
             // Extracts the list of all symptoms from the file.
             List<String> symptoms = symptomsFile.getSymptoms();
