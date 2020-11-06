@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AnalyticsCounter {
 
@@ -19,7 +20,7 @@ public class AnalyticsCounter {
             // Extracts the list of all symptoms from the file.
             List<String> symptoms = symptomsFile.getSymptoms();
 
-            Map<String, Integer> symptomsCounted = new HashMap<>();
+            Map<String, Integer> symptomsCounted = new TreeMap<>();
 
             // Loop for each symptom of the list.
             symptoms.forEach(symptom -> symptomsCounted.put(symptom, symptomsCounted.getOrDefault(symptom, 0) + 1));
