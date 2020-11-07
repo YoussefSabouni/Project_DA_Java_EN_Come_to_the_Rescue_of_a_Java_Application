@@ -22,6 +22,8 @@
     - Quelle contraintes/différentes vous avez rencontrées ?
     - Comment vous les avez résolues ?
     - Ce que vous auriez modifié ou fait différemment ?
+    La sortie du fichier est écrasé à chaque execution du programme, j'aurai mis une date et heure au nom du fichier
+     pour eviter celui. Aussi peut etre mettre le chemin de sortie et d'entrée des fichiers.
 
 
 =================================================================================
