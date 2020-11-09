@@ -1,12 +1,50 @@
 #Open Classroom - Projet 2
-**Prise de notes :**
+
+## *Récapitulatif des besoins de Heme Biotech:*  
+
+ ### Identifier les problèmes du programme:  
+ #### Problème évoquées:  
+1. faire fonctionner le code existant.
+2. pas de traitement des exceptions.
+3. pas de fermeture des ressources.
+4. variable qui se chevauchent.
+5. l'approche du code ne fonctionnera pas sur le long terme,  
+il n'est pas assez dynamique concernant les symptômes.
+6. Pas de JavaDoc sur dans la classe AnalyticsCounter.
+7. Commentaires superflus/inutiles sur certains lignes d'instruction ou le code parle de lui meme.
+8. Le code de la classe AnalyticsCounter ne respecte pas les principes de la POO.
+
+ #### Solutions apportées:
+1. Le programme se compile et s'execute, cependant il y a des fautes de conceptions, 
+ce qui apporte pas la solution attendue. (Fautes dans les filtres des symptomes.)
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+ 
+ ### Informations à apporter pour la réunion :
+ 
+ - **Questions posées par Heme Biotech ?**  
+    - comment vous avez localisé les problèmes ?  
+    - quelles solutions vous avez employées ?  
+    - quelles contraintes ou difficultés vous avez rencontrées ?  
+    - comment vous les avez résolues ?  
+    - Qu'est-ce que vous auriez modifié ou fait différemment ?
+
+    
+ 
+
+ 
 
 - Corriger le fichier AnalyticsCounter
 	1. ~~faire fonctionner le code existant.~~
 	2. ~~traitement des exceptions.~~
 	3. ~~pas de fermeture des ressources.~~
 	4. variables qui se chevauchent.
-	5. evolution du code impossible.
+	5. evolution du code impossible.  
 		~~- rajout des symptômes en fonction du fichier d'entrée.~~
 		
 - décomposer le code d'Alex en nouvelle classes ou méthodes.
@@ -19,7 +57,7 @@
 	
     - Comment avez-vous localisé les problèmes ?
     - Quelles solutions vous avez employées ?
-    - Quelle contraintes/différentes vous avez rencontrées ?
+    - quelles contraintes ou difficultés vous avez rencontrées ?
     - Comment vous les avez résolues ?
     - Ce que vous auriez modifié ou fait différemment ?
     La sortie du fichier est écrasé à chaque execution du programme, j'aurai mis une date et heure au nom du fichier
