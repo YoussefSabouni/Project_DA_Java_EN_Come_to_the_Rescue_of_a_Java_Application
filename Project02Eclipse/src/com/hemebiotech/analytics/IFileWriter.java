@@ -12,7 +12,7 @@ public interface IFileWriter {
      * Create a output file in which a list of string is saved toString line by line. If the file already exists, it
      * will be overwritten.
      *
-     * @param map
+     * @param map The input map to be written to the file
      */
     void writeMapToFile(Map<String, Integer> map);
 }
