@@ -15,20 +15,28 @@ import java.util.TreeMap;
  */
 public class AnalyticsCounter {
 
+    private final ISymptomReader SIMPTOMS_FILE;
+    private final IFileWriter    OUTPUT_FILE;
+
+    /**
+     * @param inputFilePath
+     *         Path of the input file.
+     * @param outputFilePath
+     *         Path of the output file.
+     */
+    public AnalyticsCounter(String inputFilePath, String outputFilePath) {
+
+        this.SIMPTOMS_FILE = new ReadSymptomDataFromFile(inputFilePath);
+        this.OUTPUT_FILE   = new WriteSymptomDataToFile(outputFilePath);
+        run();
+    }
+
     public static void main(String[] args) {
 
-        ISymptomReader symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
+        //        String inputFilePath  = JOptionPane.showInputDialog(null, "Please enter the full path of the file .txt to be scanned./n Example: C:/desktop/symptomps.txt");
+        //        String outputFilePath = String.format(JOptionPane.showInputDialog(null, "Enter the path where you want to save the output file.") + "/%s", "result.out");
 
-        // Extracts the list of all symptoms from the file.
-        List<String> symptoms = symptomsFile.getSymptoms();
-
-        AnalyticsCounter counter = new AnalyticsCounter();
-
-        Map<String, Integer> symptomsCounted = counter.countAndSortSymptoms(symptoms);
-
-        IFileWriter outputFile = new WriteSymptomDataToFile("result.out");
-
-        outputFile.writeMapToFile(symptomsCounted);
+        new AnalyticsCounter("symptoms.txt", "result.out");
 
     }
 
@@ -41,7 +49,7 @@ public class AnalyticsCounter {
      *
      * @return a treemap containing the symptoms with their number of occurrences.
      */
-    private Map<String, Integer> countAndSortSymptoms(List<String> symptoms) {
+    private static Map<String, Integer> countAndSortSymptoms(List<String> symptoms) {
 
         Map<String, Integer> symptomsCounted = new TreeMap<>();
 
@@ -49,5 +57,14 @@ public class AnalyticsCounter {
         symptoms.forEach(symptom -> symptomsCounted.put(symptom, symptomsCounted.getOrDefault(symptom, 0) + 1));
 
         return symptomsCounted;
+    }
+
+    public void run() {
+        // Extracts the list of all symptoms from the file.
+        List<String> symptoms = this.SIMPTOMS_FILE.getSymptoms();
+
+        Map<String, Integer> symptomsCounted = AnalyticsCounter.countAndSortSymptoms(symptoms);
+
+        this.OUTPUT_FILE.writeMapToFile(symptomsCounted);
     }
 }
