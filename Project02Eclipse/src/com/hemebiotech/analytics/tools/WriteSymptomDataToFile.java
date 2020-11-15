@@ -7,13 +7,15 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- *
+ * Write in a file the content of a {@link Map}.
  */
 public class WriteSymptomDataToFile implements IFileWriter {
 
     private final String filePath;
 
     /**
+     * Build the WriteSymptomDataToFile class.
+     *
      * @param filePath
      *         Location of the file to be created or modified
      */
@@ -28,7 +30,7 @@ public class WriteSymptomDataToFile implements IFileWriter {
      * will be overwritten.
      *
      * @param symptomsCounted
-     *         The input map to be written to the file
+     *         Map to be written to the file
      */
     @Override
     public void writeMapToFile(Map<String, Integer> symptomsCounted) {
@@ -38,7 +40,7 @@ public class WriteSymptomDataToFile implements IFileWriter {
 
             // Insert count by symptom in the file result.out
             symptomsCounted.forEach((symptom, count) -> {
-                // I do a try/catch again because it is not "shared" with the lambdas.
+                // I do a try/catch again because it is not "shared" with lambdas.
                 try {
                     writer.write(symptom + ": " + count + "\n");
                 } catch (IOException e) {
