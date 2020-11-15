@@ -1,5 +1,7 @@
 package com.hemebiotech.analytics;
 
+import com.hemebiotech.analytics.interfaces.IFileWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;

@@ -1,8 +1,12 @@
 package com.hemebiotech.analytics;
 
+import com.hemebiotech.analytics.interfaces.IFileWriter;
+import com.hemebiotech.analytics.interfaces.ISymptomReader;
+
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * AnalyticsCouter is the entry point of the program, it retrieves an input .txt file containing side effects (one side
@@ -15,10 +19,12 @@ import java.util.TreeMap;
  */
 public class AnalyticsCounter {
 
-    private final ISymptomReader SIMPTOMS_FILE;
-    private final IFileWriter    OUTPUT_FILE;
+    private final ISymptomReader SYMPTOMS_READER;
+    private final IFileWriter    OUTPUT_WRITER;
 
     /**
+     * Builder to build the {@link AnalyticsCounter} class.
+     *
      * @param inputFilePath
      *         Path of the input file.
      * @param outputFilePath
@@ -26,23 +32,36 @@ public class AnalyticsCounter {
      */
     public AnalyticsCounter(String inputFilePath, String outputFilePath) {
 
-        this.SIMPTOMS_FILE = new ReadSymptomDataFromFile(inputFilePath);
-        this.OUTPUT_FILE   = new WriteSymptomDataToFile(outputFilePath);
-        run();
+        this.SYMPTOMS_READER = new ReadSymptomDataFromFile(inputFilePath);
+        this.OUTPUT_WRITER   = new WriteSymptomDataToFile(outputFilePath);
     }
 
     public static void main(String[] args) {
 
-        //        String inputFilePath  = JOptionPane.showInputDialog(null, "Please enter the full path of the file .txt to be scanned./n Example: C:/desktop/symptomps.txt");
-        //        String outputFilePath = String.format(JOptionPane.showInputDialog(null, "Enter the path where you want to save the output file.") + "/%s", "result.out");
+        String inputFilePath;
+        String outFilePath;
 
-        new AnalyticsCounter("symptoms.txt", "result.out");
+        switch (args.length) {
+            case 1:
+                inputFilePath = args[0];
+                outFilePath = "result.out";
+                break;
+            case 2:
+                inputFilePath = args[0];
+                outFilePath = args[1];
+                break;
+            default:
+                inputFilePath = "symptoms.txt";
+                outFilePath = "result.out";
+        }
 
+        AnalyticsCounter analyticsCounter = new AnalyticsCounter(inputFilePath, outFilePath);
+        analyticsCounter.run();
     }
 
     /**
-     * Retrieve each String from a list, add it to a Map as a key in alphabetical order and add the value 1 to it. If
-     * the value of the key already exists then the value of this key is incremented by 1.
+     * Retrieve each {@link String} from a {@link List}, add it to a {@link Map} as a key in alphabetical order and add
+     * the value 1 to it. If the value of the key already exists then the value of this key is incremented by 1.
      *
      * @param symptoms
      *         A list of all symptoms to count and sort
@@ -51,7 +70,8 @@ public class AnalyticsCounter {
      */
     private static Map<String, Integer> countAndSortSymptoms(List<String> symptoms) {
 
-        Map<String, Integer> symptomsCounted = new TreeMap<>();
+        // keys in TreeMap are sorted using their natural order
+        Map<String, Integer> symptomsCounted = new HashMap<>();
 
         // Creates a key in symptomsCounted and increments it by 1 at each occurrence..
         symptoms.forEach(symptom -> symptomsCounted.put(symptom, symptomsCounted.getOrDefault(symptom, 0) + 1));
@@ -59,12 +79,27 @@ public class AnalyticsCounter {
         return symptomsCounted;
     }
 
+
+    public List<String> listSorter(List<String> list) {
+
+        Collections.sort(list);
+
+        return list;
+    }
+
+    /**
+     * Executes the count analysis process
+     */
     public void run() {
-        // Extracts the list of all symptoms from the file.
-        List<String> symptoms = this.SIMPTOMS_FILE.getSymptoms();
+
+        List<String> symptoms = this.SYMPTOMS_READER.getSymptoms();
+
+        symptoms = listSorter(symptoms);
 
         Map<String, Integer> symptomsCounted = AnalyticsCounter.countAndSortSymptoms(symptoms);
 
-        this.OUTPUT_FILE.writeMapToFile(symptomsCounted);
+        this.OUTPUT_WRITER.writeMapToFile(symptomsCounted);
     }
+
+
 }
