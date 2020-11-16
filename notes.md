@@ -50,7 +50,8 @@ ces méthodes sont rangées dans une classe dédiées.
     
     - Qu'est-ce que vous auriez modifié ou fait différemment ?
         1. Le programme étant destiné à des gens non initié à la programmation, 
-        j'aurai mis
+        j'aurai mis une interface graphique.
+        2. Le programme compte les ligne vides.
     
 
     
