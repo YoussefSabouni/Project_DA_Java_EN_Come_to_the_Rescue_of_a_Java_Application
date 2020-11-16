@@ -2,43 +2,58 @@
 
 ## *Récapitulatif des besoins de Heme Biotech:*  
 
- ### Identifier les problèmes du programme:  
- #### Problème évoquées:  
+ ### Identifier les problèmes du programme :  
+ #### Problème évoquées :  
 1. faire fonctionner le code existant.
 2. pas de traitement des exceptions.
 3. pas de fermeture des ressources.
 4. variable qui se chevauchent.
-5. l'approche du code ne fonctionnera pas sur le long terme,  
+5. l'approche du code ne fonctionnera pas sur le long terme.
 il n'est pas assez dynamique concernant les symptômes.
-6. Pas de JavaDoc sur dans la classe AnalyticsCounter.
+6. Pas de JavaDoc dans la classe AnalyticsCounter.
 7. Commentaires superflus/inutiles sur certains lignes d'instruction ou le code parle de lui meme.
 8. Le code de la classe AnalyticsCounter ne respecte pas les principes de la POO.
 
- #### Solutions apportées:
-1. Le programme se compile et s'execute, cependant il y a des fautes de conceptions, 
-ce qui apporte pas la solution attendue. (Fautes dans les filtres des symptomes.)
-2.
-3.
-4.
-5.
-6.
-7.
-8.
+ #### Solutions apportées :
+1. Le programme se compile et s'exécute, cependant il y a des fautes de conceptions, 
+ce qui n'apporte pas la solution attendue. (Fautes dans les filtres des symptômes.)
+2. Un try catch with ressources à été mis en place, la ou une exception peut être levée.
+3. La solution 2. corrige ce problème.
+4. 
+5. Les symptômes sont maintenant récupérés via la liste d'entrée.
+6. Chaque classe du programme a une Javadoc
+7. Nettoyage des commentaires superflus/inutiles
+8. Le code métier à été séparé en plusieurs méthodes,
+ces méthodes sont rangées dans une classe dédiées.
  
  ### Informations à apporter pour la réunion :
  
  - **Questions posées par Heme Biotech ?**  
-    - comment vous avez localisé les problèmes ?  
+    - comment vous avez localisé les problèmes ? 
+        1. J'ai essayé de compiler le code d'Alex.
+        2. J'ai lu son code en l'exécutant moi-même ligne par ligne 
+        afin d'en comprendre la philosophie.
+        
     - quelles solutions vous avez employées ?  
-    - quelles contraintes ou difficultés vous avez rencontrées ?  
+        1. J'ai nettoyé le code d'Alex des choses inutiles, tel que des variables inutilées,
+        ou des filtres mal orthographiés.
+        2. J'ai ensuite corrigé le code pour rendre le résultat attendu par Alex.
+        3. J'ai ensuite rendu le programme dynamique afin qu'il puisse compter autant
+        de nouveaux symptômes qu'ils puissent y avoir dans le document d'entrée.
+        4. J'ai séparé les méthodes métiers dans des classes correspondantes.
+        5. J'ai ajouté de la Javadoc dans le code la ou il en manquait.
+        6. J'ai ensuite essayé plusieurs cas de figure pour tester le programme.
+        
+    - quelles contraintes ou difficultés vous avez rencontrées ? 
+     
     - comment vous les avez résolues ?  
+    
     - Qu'est-ce que vous auriez modifié ou fait différemment ?
+        1. Le programme étant destiné à des gens non initié à la programmation, 
+        j'aurai mis
+    
 
     
- 
-
- 
-
 - Corriger le fichier AnalyticsCounter
 	1. ~~faire fonctionner le code existant.~~
 	2. ~~traitement des exceptions.~~
