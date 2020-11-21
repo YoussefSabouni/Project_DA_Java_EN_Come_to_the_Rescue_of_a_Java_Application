@@ -1,5 +1,6 @@
 package com.hemebiotech.analytics.interfaces;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,10 +10,11 @@ import java.util.Map;
 public interface IFileWriter {
 
     /**
-     * Create a output file in which a list of string is saved toString line by line. If the file already exists, it
-     * will be overwritten.
+     * Create a output file in which a {@link List} of string is saved to String line by line. If the file already
+     * exists, it will be overwritten.
      *
-     * @param map The input map to be written to the file
+     * @param map
+     *         The input {@link Map} to be written to the file
      */
     void writeMapToFile(Map<String, Integer> map);
 }
