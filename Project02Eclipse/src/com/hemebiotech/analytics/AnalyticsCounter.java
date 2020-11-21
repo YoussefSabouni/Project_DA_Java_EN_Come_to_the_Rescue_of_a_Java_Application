@@ -1,39 +1,79 @@
 package com.hemebiotech.analytics;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.util.*;
+import com.hemebiotech.analytics.interfaces.IFileWriter;
+import com.hemebiotech.analytics.interfaces.ISymptomReader;
+import com.hemebiotech.analytics.tools.ReadSymptomDataFromFile;
+import com.hemebiotech.analytics.tools.SymptomsManagement;
+import com.hemebiotech.analytics.tools.WriteSymptomDataToFile;
 
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * AnalyticsCouter is the entry point of the program, it retrieves an input .txt file containing side effects (one side
+ * effect per line).
+ * <p>
+ * It sorts these side effects, counts them, and sorts them in alphabetical order. The result is then written to an
+ * output .out file.
+ *
+ * @version 1.1
+ */
 public class AnalyticsCounter {
 
-    public static void main(String[] args) throws Exception {
+    private final ISymptomReader SYMPTOMS_READER;
+    private final IFileWriter    OUTPUT_WRITER;
 
-        // Exception handling and resource auto-closure with try-with-resources.
-        try (FileWriter writer = new FileWriter("result.out")) {
+    /**
+     * Builder to build the {@link AnalyticsCounter} class.
+     *
+     * @param inputFilePath
+     *         Path of the input file.
+     * @param outputFilePath
+     *         Path of the output file.
+     */
+    public AnalyticsCounter(String inputFilePath, String outputFilePath) {
 
-            ReadSymptomDataFromFile symptomsFile = new ReadSymptomDataFromFile("symptoms.txt");
+        this.SYMPTOMS_READER = new ReadSymptomDataFromFile(inputFilePath);
+        this.OUTPUT_WRITER   = new WriteSymptomDataToFile(outputFilePath);
+    }
 
-            // Extracts the list of all symptoms from the file.
-            List<String> symptomsRecovered = symptomsFile.getSymptoms();
+    public static void main(String[] args) {
 
-            // Deduplication of the list of recovered symptoms.
-            Set<String> symptoms = new HashSet<>(symptomsRecovered);
+        String inputFilePath;
+        String outFilePath;
 
-            Map<String, Integer> symptomsCounted = new HashMap<>();
-
-            symptoms.forEach(item -> symptomsCounted.put(item, 0));
-
-            // Playback loop for each line of the file.
-            symptomsRecovered.forEach(item -> symptomsCounted.put(item, symptomsCounted.get(item) + 1));
-
-            // Insert count by symptom in the file result.out
-            for (Map.Entry<String, Integer> symptomCounted : symptomsCounted.entrySet()) {
-                writer.write(symptomCounted.getKey() + ": " + symptomCounted.getValue() + "\n");
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+        switch (args.length) {
+            case 1:
+                inputFilePath = args[0];
+                outFilePath = "result.out";
+                break;
+            case 2:
+                inputFilePath = args[0];
+                outFilePath = args[1];
+                break;
+            default:
+                inputFilePath = "symptoms.txt";
+                outFilePath = "result.out";
         }
 
+        AnalyticsCounter analyticsCounter = new AnalyticsCounter(inputFilePath, outFilePath);
+        analyticsCounter.run();
     }
+
+    /**
+     * Executes the count analysis process
+     */
+    public void run() {
+
+        List<String> symptoms = this.SYMPTOMS_READER.getSymptoms();
+
+        Map<String, Integer> symptomsCounted = SymptomsManagement.countSymptoms(symptoms);
+
+        symptomsCounted = SymptomsManagement.sortSymptoms(symptomsCounted);
+
+        this.OUTPUT_WRITER.writeMapToFile(symptomsCounted);
+    }
+
+
 }
