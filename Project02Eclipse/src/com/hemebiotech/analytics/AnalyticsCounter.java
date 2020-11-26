@@ -1,43 +1,79 @@
 package com.hemebiotech.analytics;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.hemebiotech.analytics.interfaces.IFileWriter;
+import com.hemebiotech.analytics.interfaces.ISymptomReader;
+import com.hemebiotech.analytics.tools.ReadSymptomDataFromFile;
+import com.hemebiotech.analytics.tools.SymptomsManagement;
+import com.hemebiotech.analytics.tools.WriteSymptomDataToFile;
 
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * AnalyticsCouter is the entry point of the program, it retrieves an input .txt file containing side effects (one side
+ * effect per line).
+ * <p>
+ * It sorts these side effects, counts them, and sorts them in alphabetical order. The result is then written to an
+ * output .out file.
+ *
+ * @version 1.1
+ */
 public class AnalyticsCounter {
-	private static int headacheCount = 0;	// initialize to 0
-	private static int rashCount = 0;		// initialize to 0
-	private static int pupilCount = 0;		// initialize to 0
-	
-	public static void main(String args[]) throws Exception {
-		// first get input
-		BufferedReader reader = new BufferedReader (new FileReader("symptoms.txt"));
-		String line = reader.readLine();
 
-		int i = 0;	// set i to 0
-		int headCount = 0;	// counts headaches
-		while (line != null) {
-			i++;	// increment i
-			System.out.println("symptom from file: " + line);
-			if (line.equals("headache")) {
-				headCount++;
-				System.out.println("number of headaches: " + headCount);
-			}
-			else if (line.equals("rush")) {
-				rashCount++;
-			}
-			else if (line.contains("pupils")) {
-				pupilCount++;
-			}
+    private final ISymptomReader SYMPTOMS_READER;
+    private final IFileWriter    OUTPUT_WRITER;
 
-			line = reader.readLine();	// get another symptom
-		}
-		
-		// next generate output
-		FileWriter writer = new FileWriter ("result.out");
-		writer.write("headache: " + headacheCount + "\n");
-		writer.write("rash: " + rashCount + "\n");
-		writer.write("dialated pupils: " + pupilCount + "\n");
-		writer.close();
-	}
+    /**
+     * Builder to build the {@link AnalyticsCounter} class.
+     *
+     * @param inputFilePath
+     *         Path of the input file.
+     * @param outputFilePath
+     *         Path of the output file.
+     */
+    public AnalyticsCounter(String inputFilePath, String outputFilePath) {
+
+        this.SYMPTOMS_READER = new ReadSymptomDataFromFile(inputFilePath);
+        this.OUTPUT_WRITER   = new WriteSymptomDataToFile(outputFilePath);
+    }
+
+    public static void main(String[] args) {
+
+        String inputFilePath;
+        String outFilePath;
+
+        switch (args.length) {
+            case 1:
+                inputFilePath = args[0];
+                outFilePath = "result.out";
+                break;
+            case 2:
+                inputFilePath = args[0];
+                outFilePath = args[1];
+                break;
+            default:
+                inputFilePath = "symptoms.txt";
+                outFilePath = "result.out";
+        }
+
+        AnalyticsCounter analyticsCounter = new AnalyticsCounter(inputFilePath, outFilePath);
+        analyticsCounter.run();
+    }
+
+    /**
+     * Executes the count analysis process
+     */
+    public void run() {
+
+        List<String> symptoms = this.SYMPTOMS_READER.getSymptoms();
+
+        Map<String, Integer> symptomsCounted = SymptomsManagement.countSymptoms(symptoms);
+
+        symptomsCounted = SymptomsManagement.sortSymptoms(symptomsCounted);
+
+        this.OUTPUT_WRITER.writeMapToFile(symptomsCounted);
+    }
+
+
 }
