@@ -6,6 +6,8 @@ import com.hemebiotech.analytics.tools.ReadSymptomDataFromFile;
 import com.hemebiotech.analytics.tools.SymptomsManagement;
 import com.hemebiotech.analytics.tools.WriteSymptomDataToFile;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class AnalyticsCounter {
     private final ISymptomReader SYMPTOMS_READER;
     private final IFileWriter    OUTPUT_WRITER;
 
+
     /**
      * Builder to build the {@link AnalyticsCounter} class.
      *
@@ -32,7 +35,7 @@ public class AnalyticsCounter {
      * @param outputFilePath
      *         Path of the output file.
      */
-    public AnalyticsCounter(String inputFilePath, String outputFilePath) {
+    public AnalyticsCounter(File inputFilePath, String outputFilePath) {
 
         this.SYMPTOMS_READER = new ReadSymptomDataFromFile(inputFilePath);
         this.OUTPUT_WRITER   = new WriteSymptomDataToFile(outputFilePath);
@@ -40,25 +43,22 @@ public class AnalyticsCounter {
 
     public static void main(String[] args) {
 
-        String inputFilePath;
-        String outFilePath;
+        File   inputFilePath = null;
+        String outFilePath   = "result.out";
 
-        switch (args.length) {
-            case 1:
-                inputFilePath = args[0];
-                outFilePath = "result.out";
-                break;
-            case 2:
-                inputFilePath = args[0];
-                outFilePath = args[1];
-                break;
-            default:
-                inputFilePath = "symptoms.txt";
-                outFilePath = "result.out";
-        }
+        JOptionPane.showMessageDialog(null, "Welcome to the Analytics Counter application.\n" + "\n" + "Please prepare a text file for the symptom count.");
+
+        JFileChooser selectFile = new JFileChooser();
+        selectFile.setMultiSelectionEnabled(false);
+        selectFile.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        selectFile.showDialog(null, "Analyze");
+        inputFilePath = selectFile.getSelectedFile();
 
         AnalyticsCounter analyticsCounter = new AnalyticsCounter(inputFilePath, outFilePath);
         analyticsCounter.run();
+
+        JOptionPane.showMessageDialog(null, "The analysis is complete.");
+
     }
 
     /**

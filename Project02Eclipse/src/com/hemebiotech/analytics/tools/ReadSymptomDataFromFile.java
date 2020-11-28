@@ -3,6 +3,7 @@ package com.hemebiotech.analytics.tools;
 import com.hemebiotech.analytics.interfaces.ISymptomReader;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
-    private String filepath;
+    private File filepath;
 
     /**
      * @param filepath
      *         a full or partial path to file with symptom strings in it, one per line
      */
-    public ReadSymptomDataFromFile(String filepath) {
+    public ReadSymptomDataFromFile(File filepath) {
 
         this.filepath = filepath;
     }
